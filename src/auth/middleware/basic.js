@@ -17,7 +17,8 @@ async function signInValidator(req, res, next) {
         const user = await Users.findOne({ username: username })
         const valid = await bcrypt.compare(password, user.password);
         if (valid) {
-            res.status(200).json(user);
+            req.user = user;
+            next();
         } else {
             throw new Error('Invalid User')
         }
